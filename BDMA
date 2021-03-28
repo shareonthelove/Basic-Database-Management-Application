@@ -1,0 +1,405 @@
+import csv
+#import os
+
+def createContact():
+
+    with open('contact.csv', mode='a+') as contact:
+        contact = csv.writer(contact, delimiter=',')#, quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        fName = input("Please enter your First Name: ")
+        lName = input("Last Name: ")
+        gender = input("Gender: ")   
+        contact.writerow([fName, lName, gender])
+
+    with open('address.csv', mode='a+') as address:
+        address = csv.writer(address, delimiter=',')#, quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        address1 = input("Please enter your Address 1: ")
+        address2 = input("Address 2: ")
+        apt = input("Apt: ")
+        city = input("City: ")
+        state = input("State: ")
+        country = input("country: ")
+        address.writerow([address1, address2, apt, city, state, country])
+
+    with open('phone.csv', mode='a+') as phone:
+        phone = csv.writer(phone, delimiter=',')#, quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        phoneType = input("Please enter your Type of phone: ")
+        phoneNumb = input("Phone number: ")
+        phone.writerow([phoneType, phoneNumb])
+        
+    print() 
+    main()
+
+def editContact():
+
+    ecinput = int()
+
+    print("1. Contact\n2. Address\n3. Phone\n")
+    einput = input("Please make a selection on which field to edit from: ")
+
+    if einput =="1":
+        with open('contact.csv', 'r') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", row)
+                eline += 1
+            ecinput = int(input("Choose which number to edit from: "))
+            if ecinput < 1 or  ecinput > eline:
+                print("You have not made a correct selection.")
+                main()
+
+            fName = input("Please enter your First Name: ")
+            lName = input("Last Name: ")
+            gender = input("Gender: ")    
+            
+            with open('contact.csv', 'r+') as file:
+                reader = csv.reader(file)#, delimiter=',') 
+                with open('temp.csv', mode='w') as file:
+                    temp = csv.writer(file)     
+                    index = 1
+                    for row in reader:
+                        if index == ecinput:
+                            temp.writerow([fName, lName, gender])
+                            index += 1
+                        else:
+                            temp.writerow(row)
+                            index += 1                        
+            
+        with open('contact.csv', 'w') as reader:
+            reader = csv.writer(reader) #, delimiter=','
+            with open('temp.csv', mode='r+') as file:
+                temp = csv.reader(file, delimiter=',')
+                for row in temp:
+                    reader.writerow(row)#[f'{row[0]} {row[1]} {row[2]}'])
+
+        print("Updated Contact: ")   
+        with open('contact.csv', 'r') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", row)
+                eline += 1
+
+        with open('temp.csv', mode='w') as file:
+            print()
+
+    elif einput == "2":  
+        with open('contact.csv', 'r') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", [f'{row[0]}' , f'{row[1]}'])
+                eline += 1     
+        with open('address.csv', 'r+') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", row)
+                eline += 1
+            ecinput = int(input("Choose which number to edit from: "))
+            if ecinput < 1 or  ecinput > eline:
+                print("You have not made a correct selection.")
+                editContact()
+
+            address1 = input("Please enter your new Address 1: ")
+            address2 = input("Address 2: ")
+            apt = input("Apt: ")
+            city = input("City: ")
+            state = input("State: ")
+            country = input("country: ") 
+            
+            with open('address.csv', 'r+') as file:
+                reader = csv.reader(file)#, delimiter=',') 
+                with open('temp.csv', mode='w') as file:
+                    temp = csv.writer(file)     
+                    index = 1
+
+                    for row in reader:
+                        if index == ecinput:
+                            temp.writerow([address1, address2, apt, city, state, country]) 
+                            index += 1
+                        else:
+                            temp.writerow(row)
+                            index += 1
+                        
+            
+        with open('address.csv', 'w') as reader:
+            reader = csv.writer(reader) #, delimiter=','
+            print("Updated Address: ")
+            with open('temp.csv', mode='r+') as file:
+                temp = csv.reader(file, delimiter=',')
+                for row in temp:
+                    reader.writerow(row)
+
+        with open('contact.csv', 'r') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", row)
+                eline += 1
+        
+        with open('address.csv', 'r') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", row)
+                eline += 1
+
+        with open('temp.csv', mode='w') as file:
+            print()
+
+    elif einput == "3":  
+        with open('contact.csv', 'r') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", row)
+                eline += 1     
+        with open('phone.csv', 'r+') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", row)
+                eline += 1
+            ecinput = int(input("Choose which number to edit from: "))
+            if ecinput < 1 or  ecinput > eline:
+                print("You have not made a correct selection.")
+                editContact()
+
+            phoneType = input("Please enter your Type of phone: ")
+            phoneNumb = input("Phone number: ")
+            
+            with open('phone.csv', 'r+') as file:
+                reader = csv.reader(file)#, delimiter=',') 
+                with open('temp.csv', mode='w') as file:
+                    temp = csv.writer(file)     
+                    index = 1
+                    for row in reader:
+                        if index == ecinput:
+                            temp.writerow([phoneType, phoneNumb]) 
+                            index += 1
+                        else:
+                            temp.writerow(row)
+                            index += 1
+            
+        with open('phone.csv', 'w') as reader:
+            reader = csv.writer(reader) #, delimiter=','
+            with open('temp.csv', mode='r+') as file:
+                temp = csv.reader(file, delimiter=',')
+                for row in temp:
+                    reader.writerow(row)
+        
+        print("Updated Phone: ")
+        with open('contact.csv', 'r') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", row)
+                eline += 1
+        
+        with open('phone.csv', 'r') as file:
+            reader = csv.reader(file)
+            eline = 1
+            for row in reader:
+                print(eline, ":", row)
+                eline += 1
+
+        with open('temp.csv', mode='w') as file:
+            print()
+
+    else:
+        print("You have not made a correct selection.\n")
+        main()
+ 
+    main()
+
+def searchContact():
+
+    line_count = int()
+
+    with open('contact.csv', 'r') as file:
+        reader = csv.reader(file)
+
+        fName = input("Please enter the First Name to search for: ")
+        lName = input("Last Name: ")
+        gender = input("Gender: ")   
+        line_count = 1     
+
+        for row in reader:
+            if f'{row[0]}' == fName and f'{row[1]}' == lName and f'{row[2]}' == gender:
+                print("Contact: ", row)
+  
+                with open('address.csv', 'r') as file:
+                    reader = csv.reader(file)
+                    addindex = 1
+                    for row in reader:
+                        if addindex == line_count:# and addindex == index:
+                            print("Address: ", row)
+                            addindex += 1
+                            break
+                        else:
+                            addindex += 1
+
+                with open('phone.csv', 'r') as file:
+                    reader = csv.reader(file)
+                    phoindex = 1
+                    for row in reader:
+                        if phoindex == line_count:
+                            print("Phone:   ", row)
+                            phoindex += 1
+                            break
+                        else:
+                            phoindex += 1
+                if addindex == phoindex:
+                    index = phoindex    
+                line_count += 1
+                            
+            elif f'{row[0]}' != fName or f'{row[1]}' != lName or f'{row[2]}' != gender:
+                line_count += 1 
+                # index = line_count          
+            #elif f'{row[0]}' != fName and f'{row[1]}' != lName and f'{row[2]}' != gender:
+            else:
+                print("Contact not found within the database. Please try again.\n")
+
+        if line_count == index:
+            print("Contact not found within the database. Please try again.\n")
+            
+    print()     
+    main()
+
+def deleteContact():
+
+    dinput = int()
+
+    with open('contact.csv', 'r') as file:
+        reader = csv.reader(file, delimiter=',') 
+        dline = 1
+        for row in reader:
+            print(dline, ":", row)
+            dline += 1  
+
+        with open('address.csv', 'r') as file:
+            reader = csv.reader(file, delimiter=',') 
+            dline = 1
+            for row in reader:
+                print(dline, ":", row)
+                dline += 1
+        with open('phone.csv', 'r') as file:
+            reader = csv.reader(file, delimiter=',') 
+            dline = 1
+            for row in reader:
+                print(dline, ":", row)
+                dline += 1
+
+        dinput = int(input("Please make a selection for deletion: "))      
+        if dinput < 1 or dinput > dline:
+            print("You have not made a correct selection.\n")
+            main()
+
+        with open('contact.csv', 'r+') as file:
+                reader = csv.reader(file)#, delimiter=',')     
+                with open('temp.csv', mode='w') as file:
+                    temp = csv.writer(file)                #temp = open('contact.csv', 'r+')
+                    index = 1
+                    for row in reader:
+                        if index == dinput:
+                            index += 1  
+                            continue
+                        else:
+                            temp.writerow(row)#f'{row[0]} {row[1]} {row[2]}')
+                            index += 1  
+                        
+                with open('contact.csv', 'w') as reader:
+                    reader = csv.writer(reader) #, delimiter=','
+                    with open('temp.csv', mode='r+') as file:
+                        temp = csv.reader(file, delimiter=',')
+                        for row in temp:
+                            reader.writerow(row)#[f'{row[0]} {row[1]} {row[2]}'])   
+
+        with open('address.csv', 'r+') as file:
+            reader = csv.reader(file)
+                        
+            with open('temp.csv', mode='w') as file:
+                temp = csv.writer(file)
+                index = 1
+                for row in reader:
+                    if index == dinput:
+                        index += 1  
+                        continue
+                    else:
+                        temp.writerow(row)
+                        index += 1    
+            with open('address.csv', 'w') as reader:
+                reader = csv.writer(reader)
+                with open('temp.csv', mode='r+') as file:
+                    temp = csv.reader(file, delimiter=',')
+                    for row in temp:
+                        reader.writerow(row)
+
+        with open('phone.csv', 'r+') as file:
+                reader = csv.reader(file)
+                                
+                with open('temp.csv', mode='w') as file:
+                    temp = csv.writer(file)
+                    index = 1 
+                    for row in reader:
+                        if index == dinput:
+                            index += 1  
+                            continue
+                        else:
+                            temp.writerow(row)
+                            index += 1
+                with open('phone.csv', 'w') as reader:
+                    reader = csv.writer(reader)
+                    with open('temp.csv', mode='r+') as file:
+                        temp = csv.reader(file, delimiter=',')
+                        for row in temp:
+                            reader.writerow(row)
+        
+        with open('temp.csv', mode='w') as file:
+            print()
+                            
+    with open('contact.csv', 'r') as file:
+        reader = csv.reader(file)
+        print("Updated Contact: ")
+        for row in reader:
+            print(row)
+
+    with open('address.csv', 'r') as file:
+        reader = csv.reader(file)
+        print("Updated Address: ")
+        for row in reader:
+            print(row)
+
+    with open('phone.csv', 'r') as file:
+        reader = csv.reader(file)
+        print("Updated Phone: ")
+        for row in reader:
+            print(row)  
+    print()        
+    main()
+                
+
+def main():
+    print("1. Create Contact\n2. Edit Contact\n3. Search Contact\n4. Delete contact\n5. Exit\n")
+    uinput = input("Please make a selection: ")
+
+    if uinput == "1":
+        createContact()
+
+    if uinput == "2":
+        editContact()
+
+    if uinput == "3":
+        searchContact()
+
+    if uinput == "4":
+        deleteContact()
+
+    if uinput == "5":
+        print("Goodbye.")
+        exit()
+    else:
+        print("You have not made a correct selection.\n")
+        main()
+main()
